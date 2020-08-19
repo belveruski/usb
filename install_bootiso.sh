@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Script to install Bootiso
+# Create a USB bootable device from an image file easily and securely.
 
 # Check if the script being run as root
 if [[ $EUID -ne 0 ]]; then
@@ -9,16 +10,13 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 echo [+] Installation of Bootiso...
-
 # Install requirement
-sudo -E sh -c  'apt-get install -qq -y wimtools'
-
-# Download and install Bootiso from Github
-sudo -E sh -c 'git clone --quiet https://github.com/jsamr/bootiso.git'
-cd bootiso && make install &> /dev/null
+sudo -E sh -c  'apt-get install -qq -y wimtools curl jq < /dev/null > /dev/null'
+sudo -E sh -c 'wget -q https://rawgit.com/jsamr/bootiso/latest/bootiso -O /usr/bin/bootiso'
+sudo -E sh -c 'chmod +x /usr/bin/bootiso'
 
 # Check if Bootiso is installed
-ls /usr/local/bin | grep bootiso &> /dev/null
+ls /usr/bin/bootiso | grep bootiso &> /dev/null
 if [ $? -ne 0 ]
     then 
         echo [-] Bootiso is not installed.
